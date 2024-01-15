@@ -3,3 +3,8 @@ numpy
 keras
 tensorflow
 flask
+jupyter
+nltk
+scikit-learn
+bs4
+gensim
