@@ -1,27 +1,20 @@
-from flask import Flask, render_template, request, jsonify
-from transformers import BertForSequenceClassification, BertTokenizer, TextClassificationPipeline
-model_path = "JiaqiLee/imdb-finetuned-bert-base-uncased"
-tokenizer = BertTokenizer.from_pretrained(model_path)
-model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
-pipeline = TextClassificationPipeline(model=model, tokenizer=tokenizer)
-app = Flask(__name__)
+import streamlit as st
+import os
+import sys
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
-@app.route('/')
-def home():
-    return render_template('home.html')
 
-@app.route('/api/post_example', methods=['POST'])
-def post_example():
-    if request.method == 'POST':
-        # Get JSON data from the request
-        data = request.json
+model_path = "PARADOXop1002/text-classification"
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+model = AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2)
+inference = pipeline(model=model, tokenizer=tokenizer, task='sentiment-analysis')
+os.makedirs('./models/', exist_ok=True)
+tokenizer.save_pretrained('./models/')
+model.save_pretrained('./models/')
+st.title('This is a title') 
+text = st.text_area('Enter your sentence here:')
+if text:
+    st.title(inference(text))
+st.title('_PARADOXop_ is :blue[cool] :sunglasses:')
 
-        # Process the data (replace this with your logic)
-        processed_data = {'received_data': data['input_data']}
-        print(processed_data['received_data'])
-        text = pipeline(processed_data)
-        print(text)
-        return jsonify(processed_data)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+st.page_link("http://www.google.com", label="Linkedin", icon="🌎")
