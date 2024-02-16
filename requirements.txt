@@ -8,3 +8,9 @@ nltk
 scikit-learn
 bs4
 gensim
+flask
+hugging_face
+datasets
+streamlit
+transformers
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
